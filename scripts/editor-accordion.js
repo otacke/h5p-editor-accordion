@@ -20,8 +20,47 @@ H5PEditor.Accordion = (function () {
         libraryColumn.field.options = libraryColumn.field.options.filter(function (option) {
           return option.indexOf('H5P.Accordion ') === -1;
         });
+
+        /*
+         * There doesn't seem to be a way to get hold of the H5P editor select
+         * object and to determine when it's ready, so using DOM here to remove
+         * the Accordion from the select field (is loaded for fresh H5Ps)
+         */
+        const selectColumn = libraryColumn.$select.get(0);
+
+        waitForColumnOptions(selectColumn, 200, function() {
+          // Remove Accordion from Column DOM options, first option is '-'
+          for (let i = selectColumn.children.length - 1; i >= 1; i--) {
+            if (selectColumn.children[i].value.indexOf('H5P.Accordion ') !== -1) {
+              selectColumn.removeChild(selectColumn.children[i]);
+            }
+          }
+        });
       });
     };
+
+    /**
+     * Wait for Column options to be loaded to DOM.
+     * @param {HTMLElement} selectColumn Select field DOM.
+     * @param {number} timeout Timeout in seconds, minimum 100ms.
+     * @param {object} callback Callback function.
+     */
+    const waitForColumnOptions = function (selectColumn, timeout, callback) {
+      if (typeof callback !== 'function' || !selectColumn) {
+        return;
+      }
+
+      if (typeof timeout !== 'number' || timeout < 100) {
+        timeout = 200;
+      }
+
+      if (selectColumn.children.length === 1) {
+        setTimeout(waitForColumnOptions, timeout, selectColumn, timeout, callback);
+      }
+      else {
+        callback();
+      }
+    }
 
     /**
      * Find ids of Accordion instances in Column.
