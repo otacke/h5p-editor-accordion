@@ -95,10 +95,14 @@ H5PEditor.Accordion = (function () {
 
     // Remove Accordion as option from subcontent
     that.libraryAccordion.change(function () {
-      const columnAccordionIds = findAccordionIds();
-      sanitizeColumnParams(columnAccordionIds);
-      sanitizeColumnDOM(columnAccordionIds);
       sanitizeColumnOptions();
+
+      const columnAccordionIds = findAccordionIds();
+      if (columnAccordionIds.length > 0) {
+        // Column content seems to have been pasted and might contain Accordions
+        sanitizeColumnParams(columnAccordionIds);
+        sanitizeColumnDOM(columnAccordionIds);
+      }
     });
 
     /**
