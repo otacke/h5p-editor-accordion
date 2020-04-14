@@ -5,9 +5,6 @@ H5PEditor.Accordion = (function () {
 
     that.field = field;
 
-    // Outsource readies
-    that.passReadies = true;
-
     /**
      * Sanitize Column options.
      */
