@@ -32,7 +32,7 @@ H5PEditor.Accordion = (function () {
      */
     const findAccordionIds = function () {
       if (!that.libraryAccordion || !that.libraryAccordion.params || !that.libraryAccordion.params.params || !that.libraryAccordion.params.params.content) {
-        return;
+        return [];
       }
 
       const columnContents = that.libraryAccordion.params.params.content;
