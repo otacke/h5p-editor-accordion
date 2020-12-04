@@ -153,10 +153,15 @@ H5PEditor.Accordion = (function () {
     /**
      * Validate.
      * @public
-     * @return {boolean} True, because H5P.Column os always used.
+     * @return {boolean} Aggregated validation results of Columns
      */
     that.validate = function () {
-      return true;
+      let validate = true;
+      that.libraryAccordion.children[0].forEachChild(function (child) {
+        validate = validate && child.validate();
+      });
+
+      return validate;
     };
 
     that.remove = function () {
